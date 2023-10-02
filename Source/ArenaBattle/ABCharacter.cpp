@@ -2,6 +2,7 @@
 
 
 #include "ABCharacter.h"
+#include "ABAnimIntance.h"
 
 // Sets default values
 AABCharacter::AABCharacter()
@@ -118,6 +119,7 @@ void AABCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 
 	PlayerInputComponent->BindAction(TEXT("ViewChange"), EInputEvent::IE_Pressed, this, &AABCharacter::ViewChange);
 	PlayerInputComponent->BindAction(TEXT("Jump"), EInputEvent::IE_Pressed, this, &AABCharacter::Jump);
+	PlayerInputComponent->BindAction(TEXT("Attack"), EInputEvent::IE_Pressed, this, &AABCharacter::Attack);
 
 
 	PlayerInputComponent->BindAxis(TEXT("UpDown"), this, &AABCharacter::UpDown);
@@ -187,5 +189,15 @@ void AABCharacter::ViewChange()
 		break;
 	}
 }
+
+void AABCharacter::Attack()
+{
+	auto AnimInstance = Cast<UABAnimInstance>(GetMesh()->GetAnimInstance());
+	if (nullptr == AnimInstance) return;
+
+	AnimInstance->PlayAttackMontage();
+}
+
+
 
 
