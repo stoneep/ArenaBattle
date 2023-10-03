@@ -124,6 +124,18 @@ void AABCharacter::PostInitializeComponents()
 	ABCHECK(nullptr != AnimInstance);
 
 	AnimInstance->OnMontageEnded.AddDynamic(this, &AABCharacter::OnAttackMontageEnded);
+
+	ABAnim->OnNextAttackCheck.AddLambda([this]() -> void {
+
+			ABLOG(Warning, TEXT("OnNextAttackCheck"));
+			CanNextCombo = false;
+
+			if (IsComboInputOn)
+			{
+			AttackStartComboState();
+			ABAnim->JumpToAttackMontageSection(CurrentCombo);
+			}
+		});
 }
 
 // Called to bind functionality to input
@@ -206,18 +218,30 @@ void AABCharacter::ViewChange()
 
 void AABCharacter::Attack()
 {
-	if (IsAttacking) return;
-	auto AnimInstance = Cast<UABAnimInstance>(GetMesh()->GetAnimInstance());
-	if (nullptr == AnimInstance) return;
-
-	AnimInstance->PlayAttackMontage();
-	IsAttacking = true;
+	if (IsAttacking)
+	{
+		ABCHECK(FMath::IsWithinInclusive<int32>(CurrentCombo, 1, MaxCombo));
+		if (CanNextCombo)
+		{
+			IsComboInputOn = true;
+		}
+	}
+	else
+	{
+		ABCHECK(CurrentCombo == 0);
+		AttackStartComboState();
+		ABAnim->PlayAttackMontage();
+		ABAnim->JumpToAttackMontageSection(CurrentCombo);
+		IsAttacking = true;
+	}
 }
 
 void AABCharacter::OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted)
 {
 	ABCHECK(IsAttacking);
+	ABCHECK(CurrentCombo > 0);
 	IsAttacking = false;
+	AttackEndComboState();
 }
 
 void AABCharacter::AttackStartComboState()
