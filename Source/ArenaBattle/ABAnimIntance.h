@@ -35,7 +35,6 @@ private:
 	void AnimNotify_NextAttackCheck();
 
 	FName GetAttackMontageSectionName(int32 Section);
-	//void SetPawnSpeed(float NewPawnSpeed) { CurrentPawnSpeed = NewPawnSpeed; }
 
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Pawn,

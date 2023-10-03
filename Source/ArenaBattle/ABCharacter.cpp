@@ -41,7 +41,6 @@ AABCharacter::AABCharacter()
 	GetCharacterMovement()->JumpZVelocity = 800.0f;
 
 	IsAttacking = false;
-
 	MaxCombo = 4;
 	AttackEndComboState();
 }
@@ -120,10 +119,10 @@ void AABCharacter::Tick(float DeltaTime)
 void AABCharacter::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
-	auto AnimInstance = Cast<UABAnimInstance>(GetMesh()->GetAnimInstance());
-	ABCHECK(nullptr != AnimInstance);
+	ABAnim = Cast<UABAnimInstance>(GetMesh()->GetAnimInstance());
+	ABCHECK(nullptr != ABAnim);
 
-	AnimInstance->OnMontageEnded.AddDynamic(this, &AABCharacter::OnAttackMontageEnded);
+	ABAnim->OnMontageEnded.AddDynamic(this, &AABCharacter::OnAttackMontageEnded);
 
 	ABAnim->OnNextAttackCheck.AddLambda([this]() -> void {
 
@@ -132,10 +131,10 @@ void AABCharacter::PostInitializeComponents()
 
 			if (IsComboInputOn)
 			{
-			AttackStartComboState();
-			ABAnim->JumpToAttackMontageSection(CurrentCombo);
+				AttackStartComboState();
+				ABAnim->JumpToAttackMontageSection(CurrentCombo);
 			}
-		});
+	});
 }
 
 // Called to bind functionality to input
@@ -220,11 +219,11 @@ void AABCharacter::Attack()
 {
 	if (IsAttacking)
 	{
-		ABCHECK(FMath::IsWithinInclusive<int32>(CurrentCombo, 1, MaxCombo));
-		if (CanNextCombo)
-		{
-			IsComboInputOn = true;
-		}
+			ABCHECK(FMath::IsWithinInclusive<int32>(CurrentCombo, 1, MaxCombo));
+			if (CanNextCombo)
+			{
+				IsComboInputOn = true;
+			}
 	}
 	else
 	{
