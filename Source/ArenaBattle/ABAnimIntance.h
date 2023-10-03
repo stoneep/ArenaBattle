@@ -20,6 +20,10 @@ public:
 
 	void PlayAttackMontage();
 
+private:
+	UFUNCTION()
+	void AnimNotify_AttackHitCheck();
+
 	//void SetPawnSpeed(float NewPawnSpeed) { CurrentPawnSpeed = NewPawnSpeed; }
 
 private:
