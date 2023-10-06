@@ -37,3 +37,13 @@ void AABItemBox::Tick(float DeltaTime)
 
 }
 
+void AABItemBox::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+	Trigger->OnComponentBeginOverlap.AddDynamic(this, &AABItemBox::OnCharacterOverlap);
+}
+
+void AABItemBox::OnCharacterOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	ABLOG_S(Warning);
+}
