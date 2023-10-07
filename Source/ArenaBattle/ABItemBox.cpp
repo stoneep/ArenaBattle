@@ -2,7 +2,7 @@
 
 
 #include "ABItemBox.h"
-
+#include "ABWeapon.h"
 // Sets default values
 AABItemBox::AABItemBox()
 {
@@ -21,6 +21,8 @@ AABItemBox::AABItemBox()
 	{
 		Box->SetStaticMesh(SM_BOX.Object);
 	}
+
+	WeaponItemClass = AABWeapon::StaticClass();
 }
 
 // Called when the game starts or when spawned

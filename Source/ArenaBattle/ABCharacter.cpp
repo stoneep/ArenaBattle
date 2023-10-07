@@ -337,7 +337,7 @@ void AABCharacter::AttackCheck()
 	{
 		if (HitResult.GetActor()->IsValidLowLevel())
 		{
-			//로그구현안됨ABLOG_FORMAT(Warning, TEXT("Hit Actor Name : %s"), *HitResult.GetActor->GetName());
+			//UELOG(Warning, TEXT("Hit Actor Name : %s"), *HitResult.GetActor->GetName());
 			UGameplayStatics::ApplyDamage(HitResult.GetActor(), 50.f, GetController(), this, UDamageType::StaticClass());
 		}
 	}
