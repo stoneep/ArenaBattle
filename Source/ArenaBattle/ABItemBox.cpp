@@ -2,6 +2,7 @@
 
 
 #include "ABItemBox.h"
+#include "ABCharacter.h"
 #include "ABWeapon.h"
 // Sets default values
 AABItemBox::AABItemBox()
@@ -48,4 +49,20 @@ void AABItemBox::PostInitializeComponents()
 void AABItemBox::OnCharacterOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	ABLOG_S(Warning);
+
+	auto ABCharacter = Cast<AABCharacter>(OtherActor);
+	ABCHECK(nullptr != ABCharacter);
+
+	if (nullptr != ABCharacter && nullptr != WeaponItemClass)
+	{
+		if (ABCharacter->CanSetWeapon())
+		{
+			auto NewWeapon = GetWorld()->SpawnActor<AABWeapon>(WeaponItemClass, FVector::ZeroVector, FRotator::ZeroRotator);
+			ABCharacter->SetWeapon(NewWeapon);
+		}
+		else
+		{
+			ABLOG(Warning, TEXT("%s can't equip weapon currently."), *ABCharacter->GetName());
+		}
+	}
 }
