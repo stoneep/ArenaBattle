@@ -19,6 +19,8 @@ AABItemBox::AABItemBox()
 	Effect->SetupAttachment(RootComponent);
 
 	Trigger->SetBoxExtent(FVector(40.f, 42.f, 30.f));
+	Trigger->SetRelativeScale3D(FVector(1.5f, 1.5f, 1.5f));
+
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> SM_BOX(TEXT("/Script/Engine.StaticMesh'/Game/InfinityBladeGrassLands/Environments/Breakables/StaticMesh/Box/SM_Env_Breakables_Box1.SM_Env_Breakables_Box1'"));
 	if (SM_BOX.Succeeded())
 	{
@@ -34,8 +36,9 @@ AABItemBox::AABItemBox()
 		Effect->OnSystemFinished.AddDynamic(this, &AABItemBox::OnEffectFinished);
 	}
 	Box->SetRelativeLocation(FVector(0.0f, -3.5f, -30.0f));
+	Effect->SetRelativeLocation(FVector(0.0f, 0.0f, -45.0f));
 
-	Box->SetCollisionProfileName(TEXT("ItemBox"));
+	Trigger->SetCollisionProfileName(TEXT("ItemBox"));
 	Box->SetCollisionProfileName(TEXT("NoCollision"));
 
 	WeaponItemClass = AABWeapon::StaticClass();
@@ -76,6 +79,7 @@ void AABItemBox::OnCharacterOverlap(UPrimitiveComponent* OverlappedComp, AActor*
 			ABCharacter->SetWeapon(NewWeapon);
 			Effect->Activate(true);
 			Box->SetHiddenInGame(true, true);
+			//SetActorEnableCollision(false);
 
 		}
 		else
