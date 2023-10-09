@@ -51,6 +51,9 @@ public:
 	class AABWeapon* CurrentWeapon;
 
 	UPROPERTY(VisibleAnywhere, Category = Weapon)
+	class UABCharacterStatComponent* CharacterStat;
+
+	UPROPERTY(VisibleAnywhere, Category = Weapon)
 	USkeletalMeshComponent* Weapon;
 
 
