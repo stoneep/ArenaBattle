@@ -43,3 +43,15 @@ void UABCharacterStatComponent::SetNewLevel(int32 NewLevel)
 		CurrentHP = CurrentStatData->MaxHP;
 	}
 }
+
+void UABCharacterStatComponent::SetDamage(float NewDamage)
+{
+	CurrentHP = FMath::Clamp<float>(CurrentHP - NewDamage, 0.0f, CurrentStatData->MaxHP);
+	if (CurrentHP <= 0.0f)
+		OnHPIsZero.Broadcast();
+}
+
+float UABCharacterStatComponent::GetAttack()
+{
+	return CurrentStatData->Attack;
+}

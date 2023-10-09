@@ -162,6 +162,12 @@ void AABCharacter::PostInitializeComponents()
 				AttackStartComboState();
 				ABAnim->JumpToAttackMontageSection(CurrentCombo);
 			}
+
+			CharacterStat->OnHPIsZero.AddLambda([this]() -> void
+				{
+					ABAnim->SetDeadAnim();
+					SetActorEnableCollision(false);
+				});
 	});
 
 	ABAnim->OnAttackHitCheck.AddUObject(this, &AABCharacter::AttackCheck);
@@ -177,7 +183,7 @@ float AABCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEve
 		ABAnim->SetDeadAnim();
 		SetActorEnableCollision(false);
 	}
-
+	CharacterStat->SetDamage(FinalDamage);
 	return FinalDamage;
 }
 
@@ -359,7 +365,7 @@ void AABCharacter::AttackCheck()
 		if (HitResult.GetActor()->IsValidLowLevel())
 		{
 			//UELOG(Warning, TEXT("Hit Actor Name : %s"), *HitResult.GetActor->GetName());
-			UGameplayStatics::ApplyDamage(HitResult.GetActor(), 50.f, GetController(), this, UDamageType::StaticClass());
+			UGameplayStatics::ApplyDamage(HitResult.GetActor(), CharacterStat->GetAttack(), GetController(), this, UDamageType::StaticClass());
 		}
 	}
 }
