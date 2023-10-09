@@ -30,6 +30,7 @@ AABCharacter::AABCharacter()
 	HPBarWidget->SetRelativeLocation(FVector(0.0f, 0.0f, 180.0f));
 	HPBarWidget->SetWidgetSpace(EWidgetSpace::Screen);
 	static ConstructorHelpers::FClassFinder<UUserWidget> UI_HUD(TEXT("/Game/Book/UI/UI_HPBar.UI_HPBar_C"));
+
 	if (UI_HUD.Succeeded())
 	{
 		HPBarWidget->SetWidgetClass(UI_HUD.Class);
